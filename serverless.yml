@@ -1,0 +1,36 @@
+service: serverless-swapi
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+       - dynamodb:Query
+       - dynamodb:Scan
+       - dynamodb:GetItem
+       - dynamodb:PutItem
+       - dynamodb:UpdateItem
+       - dynamodb:DeleteItem
+      Resource: "*"
+
+
+functions: 
+  createToken:
+    handler: src/tokens/create.createToken
+    events:
+      - http:
+          path: api/v1/tokens
+          method: post
+          
+  getToken:
+    handler: src/tokens/get.getCreditCard
+    events:
+      - httpApi:
+          path: /api/v1/token/{id}
+          method: get
+          
